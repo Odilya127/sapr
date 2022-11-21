@@ -6,6 +6,7 @@ import ConstructionRods from "./components/ConstructionRods";
 
 const PreprocessorApp = () => {
   const [rodsData, setRodsData] = useState([]);
+
   return (
     <div className="preprocessorApp">
       <h2 className="preprocessorApp__title">Препроцессор</h2>
