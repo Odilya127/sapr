@@ -6,9 +6,70 @@ import Row from "react-bootstrap/Row";
 
 import { INITIAL_STATE } from "./constants";
 
-const AddingNewRod = ({ setRodsData }) => {
+const AddingNewRod = ({ offsetRodsData }) => {
   const [rodData, setRodData] = useState(INITIAL_STATE);
   const [validated, setValidated] = useState(false);
+  const [disabledAddNewRog, setDisabledAddNewRog] = useState(false);
+
+  const { rodsData, setRodsData } = offsetRodsData;
+
+  const validateEnterValues = (event) => {
+    if (
+      rodData.rodLength != null &&
+      rodData.rodLength > 0 &&
+      rodData.crossSectionalArea != null &&
+      rodData.elasticModulus != null &&
+      rodData.allowableVoltage != null &&
+      rodData.concentratedLoad != null &&
+      rodData.linearLoad != null &&
+      (rodsData.length === 0 || rodsData[rodsData.length - 1].rodLength > 0)
+    ) {
+      setRodsData((prevState) => [
+        ...prevState,
+        {
+          ...rodData,
+          rodLength: rodData.rodLength,
+          crossSectionalArea: rodData.crossSectionalArea,
+          elasticModulus: rodData.elasticModulus,
+          allowableVoltage: rodData.allowableVoltage,
+          concentratedLoad:
+            rodData.concentratedLoad != null ? rodData.concentratedLoad : 0,
+          linearLoad: rodData.linearLoad != null ? rodData.linearLoad : 0,
+        },
+      ]);
+      setRodData(INITIAL_STATE);
+      alert("Стержень успешно добавлен");
+    } else if (
+      rodData.concentratedLoad != null &&
+      rodData.rodLength == null &&
+      rodData.crossSectionalArea == null &&
+      rodData.elasticModulus == null &&
+      rodData.allowableVoltage == null &&
+      rodData.linearLoad == null &&
+      rodsData.length > 0 &&
+      rodsData[rodsData.length - 1].rodLength > 0
+    ) {
+      setRodsData((prevState) => [
+        ...prevState,
+        {
+          ...rodData,
+          rodLength: rodData.rodLength,
+          crossSectionalArea: rodData.crossSectionalArea,
+          elasticModulus: rodData.elasticModulus,
+          allowableVoltage: rodData.allowableVoltage,
+          concentratedLoad:
+            rodData.concentratedLoad != null ? rodData.concentratedLoad : 0,
+          linearLoad: rodData.linearLoad != null ? rodData.linearLoad : 0,
+        },
+      ]);
+      setDisabledAddNewRog(true);
+      setRodData(INITIAL_STATE);
+      alert("Последний стержень успешно добавлен");
+    } else {
+      event.preventDefault();
+      alert("Неправильно введены обязательные поля");
+    }
+  };
 
   const handleSaveRodData = (event) => {
     event.preventDefault();
@@ -16,8 +77,7 @@ const AddingNewRod = ({ setRodsData }) => {
     const form = event.currentTarget;
     if (form.checkValidity()) {
       event.stopPropagation();
-      setRodsData((prevState) => [...prevState, rodData]);
-      setRodData(INITIAL_STATE);
+      validateEnterValues(event);
       setValidated(false);
     } else {
       setValidated(true);
@@ -37,10 +97,9 @@ const AddingNewRod = ({ setRodsData }) => {
           <Form.Group as={Col} md="4" controlId="rod-length">
             <Form.Label>Длина стержня (L)</Form.Label>
             <Form.Control
-              required
               type="number"
               placeholder="Введите число"
-              value={rodData.rodLength}
+              value={rodData.rodLength != null ? rodData.rodLength : ""}
               aria-describedby="rod-lenght"
               onChange={(event) =>
                 setRodData((prevState) => {
@@ -55,10 +114,13 @@ const AddingNewRod = ({ setRodsData }) => {
           <Form.Group as={Col} md="4" controlId="cross-sectional-area">
             <Form.Label>Площадь поперечного сечения (A)</Form.Label>
             <Form.Control
-              required
               type="number"
               placeholder="Введите число"
-              value={rodData.crossSectionalArea}
+              value={
+                rodData.crossSectionalArea != null
+                  ? rodData.crossSectionalArea
+                  : ""
+              }
               aria-describedby="cross-sectional-area"
               onChange={(event) =>
                 setRodData((prevState) => {
@@ -75,8 +137,9 @@ const AddingNewRod = ({ setRodsData }) => {
             <Form.Control
               type="number"
               placeholder="Введите число"
-              required
-              value={rodData.elasticModulus}
+              value={
+                rodData.elasticModulus != null ? rodData.elasticModulus : ""
+              }
               aria-describedby="elastic-modulus"
               onChange={(event) =>
                 setRodData((prevState) => {
@@ -96,8 +159,9 @@ const AddingNewRod = ({ setRodsData }) => {
               type="number"
               placeholder="Введите число"
               aria-describedby="allowable-voltage"
-              required
-              value={rodData.allowableVoltage}
+              value={
+                rodData.allowableVoltage != null ? rodData.allowableVoltage : ""
+              }
               onChange={(event) =>
                 setRodData((prevState) => {
                   return {
@@ -113,7 +177,9 @@ const AddingNewRod = ({ setRodsData }) => {
             <Form.Control
               type="number"
               placeholder="Номер узла равен номеру стержня"
-              value={rodData.concentratedLoad}
+              value={
+                rodData.concentratedLoad != null ? rodData.concentratedLoad : ""
+              }
               onChange={(event) =>
                 setRodData((prevState) => {
                   return {
@@ -130,9 +196,8 @@ const AddingNewRod = ({ setRodsData }) => {
             <Form.Label> Погонная нагрузка (Q)</Form.Label>
             <Form.Control
               type="number"
-              required
               placeholder="Введите погонное напряжение"
-              value={rodData.linearLoad}
+              value={rodData.linearLoad != null ? rodData.linearLoad : ""}
               onChange={(event) =>
                 setRodData((prevState) => {
                   return {
@@ -152,7 +217,11 @@ const AddingNewRod = ({ setRodsData }) => {
           >
             Очистить
           </Button>
-          <Button type="submit" className="btn btn-success">
+          <Button
+            type="submit"
+            className="btn btn-success"
+            disabled={disabledAddNewRog}
+          >
             Добавить
           </Button>
         </div>

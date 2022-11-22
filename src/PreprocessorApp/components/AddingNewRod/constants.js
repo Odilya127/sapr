@@ -1,8 +1,8 @@
 export const INITIAL_STATE = {
-  rodLength: "",
-  crossSectionalArea: "",
-  elasticModulus: "",
-  allowableVoltage: "",
-  concentratedLoad: "",
-  linearLoad: "",
+  rodLength: null,
+  crossSectionalArea: null,
+  elasticModulus: null,
+  allowableVoltage: null,
+  concentratedLoad: null,
+  linearLoad: null,
 };
