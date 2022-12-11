@@ -182,7 +182,10 @@ const PreprocessorApp = () => {
           offsetHaveSupports={{ isHaveSupports, setIsHaveSupports }}
         />
       ) : null}
-      <div className="preprocessorApp__block canvas" style={showVisualization}>
+      <div
+        className="preprocessorApp__block mt-5 canvas"
+        style={showVisualization}
+      >
         <img
           id="supportLeftIcon"
           src={supportLeftIcon}
