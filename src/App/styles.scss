@@ -18,5 +18,15 @@
 
   &__link {
     padding: 15px;
+
+    &_active {
+      padding: 15px;
+
+      color: white;
+    }
+
+    &_notActive {
+      padding: 15px;
+    }
   }
 }

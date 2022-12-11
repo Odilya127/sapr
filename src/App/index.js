@@ -15,7 +15,9 @@ const Index = () => {
           <a
             type="button"
             onClick={() => setActiveApp(AppType.Preprocessor)}
-            className="app__link"
+            className={`app__link${
+              activeApp === AppType.Preprocessor ? "_active" : "_notActive"
+            }`}
           >
             Препроцессор
           </a>
@@ -23,7 +25,9 @@ const Index = () => {
           <a
             type="button"
             onClick={() => setActiveApp(AppType.Processor)}
-            className="app__link"
+            className={`app__link${
+              activeApp === AppType.Processor ? "_active" : "_notActive"
+            }`}
           >
             Процессор
           </a>

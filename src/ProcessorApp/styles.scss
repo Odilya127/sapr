@@ -1,6 +1,15 @@
 .processorApp {
+  padding: 0 300px;
+
   &__title {
     color: white;
     text-align: center;
+  }
+
+  &__block {
+    margin-top: 20px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
   }
 }

@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { InputGroup, Modal } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 import supportLeftIcon from "../assets/img/supportLeft.png";
 import supportRightIcon from "../assets/img/supportRight.png";
@@ -17,6 +20,8 @@ const PreprocessorApp = () => {
     supportLeft: false,
     supportRight: false,
   });
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [constructionName, setConstructionName] = useState("");
 
   const drawStructure = () => {
     let canvas;
@@ -172,46 +177,85 @@ const PreprocessorApp = () => {
   }, [rodsData, isHaveSupports]);
 
   const showVisualization = rodsData.length > 0 ? {} : { display: "none" };
-  return (
-    <div className="preprocessorApp">
-      <h2 className="preprocessorApp__title">Препроцессор</h2>
-      <AddingNewRod offsetRodsData={{ rodsData, setRodsData }} />
-      {rodsData.length > 0 ? (
-        <ConstructionRods
-          offsetRodsData={{ rodsData, setRodsData }}
-          offsetHaveSupports={{ isHaveSupports, setIsHaveSupports }}
-        />
-      ) : null}
-      <div
-        className="preprocessorApp__block mt-5 canvas"
-        style={showVisualization}
-      >
-        <img
-          id="supportLeftIcon"
-          src={supportLeftIcon}
-          style={{ display: "none" }}
-        />
-        <img
-          id="supportRightIcon"
-          src={supportRightIcon}
-          style={{ display: "none" }}
-        />
-        <img id="arrowLeft" src={arrowLeft} style={{ display: "none" }} />
-        <img id="arrowRight" src={arrowRight} style={{ display: "none" }} />
-        <img
-          id="arrowLongRight"
-          src={arrowLongRight}
-          style={{ display: "none" }}
-        />
-        <img
-          id="arrowLongLeft"
-          src={arrowLongLeft}
-          style={{ display: "none" }}
-        />
 
-        <canvas id="canvas" height="0"></canvas>
+  const handleSaveConstruction = () => {
+    localStorage.setItem(
+      `construction.${constructionName}`,
+      JSON.stringify(rodsData)
+    );
+    setRodsData([]);
+    setIsShowModal(false);
+  };
+
+  return (
+    <>
+      <Modal show={isShowModal} onHide={() => setIsShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Введите наименование конструкции</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputGroup>
+            <Form.Control
+              autoFocus
+              onChange={(event) => setConstructionName(event.target.value)}
+            />
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setIsShowModal(false)}>
+            Закрыть
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSaveConstruction}
+            disabled={!constructionName}
+          >
+            Сохранить
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <div className="preprocessorApp">
+        <h2 className="preprocessorApp__title">Препроцессор</h2>
+        <AddingNewRod offsetRodsData={{ rodsData, setRodsData }} />
+        {rodsData.length > 0 ? (
+          <ConstructionRods
+            offsetRodsData={{ rodsData, setRodsData }}
+            offsetHaveSupports={{ isHaveSupports, setIsHaveSupports }}
+            setIsShowModal={setIsShowModal}
+          />
+        ) : null}
+        <div
+          className="preprocessorApp__block mt-5 canvas"
+          style={showVisualization}
+        >
+          <img
+            id="supportLeftIcon"
+            src={supportLeftIcon}
+            style={{ display: "none" }}
+          />
+          <img
+            id="supportRightIcon"
+            src={supportRightIcon}
+            style={{ display: "none" }}
+          />
+          <img id="arrowLeft" src={arrowLeft} style={{ display: "none" }} />
+          <img id="arrowRight" src={arrowRight} style={{ display: "none" }} />
+          <img
+            id="arrowLongRight"
+            src={arrowLongRight}
+            style={{ display: "none" }}
+          />
+          <img
+            id="arrowLongLeft"
+            src={arrowLongLeft}
+            style={{ display: "none" }}
+          />
+
+          <canvas id="canvas" height="0"></canvas>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
