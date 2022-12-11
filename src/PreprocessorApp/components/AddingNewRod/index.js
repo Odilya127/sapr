@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { v4 as uuidv4 } from "uuid";
 
 import { INITIAL_STATE } from "./constants";
 
@@ -28,6 +29,7 @@ const AddingNewRod = ({ offsetRodsData }) => {
         ...prevState,
         {
           ...rodData,
+          id: uuidv4(),
           rodLength: rodData.rodLength,
           crossSectionalArea: rodData.crossSectionalArea,
           elasticModulus: rodData.elasticModulus,
@@ -53,6 +55,7 @@ const AddingNewRod = ({ offsetRodsData }) => {
         ...prevState,
         {
           ...rodData,
+          id: uuidv4(),
           rodLength: rodData.rodLength,
           crossSectionalArea: rodData.crossSectionalArea,
           elasticModulus: rodData.elasticModulus,
@@ -154,7 +157,7 @@ const AddingNewRod = ({ offsetRodsData }) => {
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="allowable-voltage">
-            <Form.Label>Допускаемое напряжение (Б)</Form.Label>
+            <Form.Label>Допускаемое напряжение (σ)</Form.Label>
             <Form.Control
               type="number"
               placeholder="Введите число"
@@ -196,7 +199,7 @@ const AddingNewRod = ({ offsetRodsData }) => {
             <Form.Label> Погонная нагрузка (Q)</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Введите погонное напряжение"
+              placeholder="Введите погонную нагрузку"
               value={rodData.linearLoad != null ? rodData.linearLoad : ""}
               onChange={(event) =>
                 setRodData((prevState) => {

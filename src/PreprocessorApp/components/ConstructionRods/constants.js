@@ -1,9 +1,49 @@
-export const TABLE_HEADERS = [
-  "№",
-  "Длина стержня (L)",
-  "Площадь поперечного сечения (A)",
-  "Модуль упругости (E)",
-  "Допускаемое напряжение (Б)",
-  "Сосредоточенная нагрузка (F)",
-  "Погонное напряжение (Q)",
+import { isNaNValidate } from "./utils";
+
+export const TABLE_COLUMNS = [
+  {
+    dataField: "indexNumber",
+    text: "№",
+    editable: false,
+  },
+  {
+    dataField: "rodLength",
+    text: "Длина стержня (L)",
+    editable: true,
+    validator: (newValue) => isNaNValidate(newValue),
+  },
+  {
+    dataField: "crossSectionalArea",
+    text: "Площадь поперечного сечения (A)",
+    editable: true,
+    validator: (newValue) => isNaNValidate(newValue),
+  },
+  {
+    dataField: "elasticModulus",
+    text: "Модуль упругости (E)",
+    editable: true,
+
+    validator: (newValue) => isNaNValidate(newValue),
+  },
+  {
+    dataField: "allowableVoltage",
+    text: "Допускаемое напряжение (σ)",
+    editable: true,
+
+    validator: (newValue) => isNaNValidate(newValue),
+  },
+  {
+    dataField: "concentratedLoad",
+    text: "Сосредоточенная нагрузка (F)",
+    editable: true,
+
+    validator: (newValue) => isNaNValidate(newValue),
+  },
+  {
+    dataField: "linearLoad",
+    text: "Погонная нагрузка (Q)",
+    editable: true,
+
+    validator: (newValue) => isNaNValidate(newValue),
+  },
 ];

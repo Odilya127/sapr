@@ -178,7 +178,7 @@ const PreprocessorApp = () => {
       <AddingNewRod offsetRodsData={{ rodsData, setRodsData }} />
       {rodsData.length > 0 ? (
         <ConstructionRods
-          rodsData={rodsData}
+          offsetRodsData={{ rodsData, setRodsData }}
           offsetHaveSupports={{ isHaveSupports, setIsHaveSupports }}
         />
       ) : null}
