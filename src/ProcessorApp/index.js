@@ -3,13 +3,16 @@ import { Modal, Table } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 import "./styles.scss";
-import { getConstructionsFromLocalStorage } from "./utils";
+import {
+  getConstructionsFromLocalStorage,
+  parseObjFromLocalStorage,
+} from "./utils";
+import { calc } from "./calc";
 
 const ProcessorApp = () => {
   const [constructions, setConstructions] = useState([]);
   const [isShowModal, setIsShowModal] = useState(false);
-
-  useEffect(() => setConstructions(getConstructionsFromLocalStorage()), []);
+  const [selectedConstruction, setSelectedConstruction] = useState();
 
   const handleDeleteConstruction = (constructionName) => {
     setConstructions(
@@ -17,6 +20,14 @@ const ProcessorApp = () => {
     );
     localStorage.removeItem(constructionName);
   };
+
+  useEffect(() => setConstructions(getConstructionsFromLocalStorage()), []);
+
+  const deltaValues = calc(parseObjFromLocalStorage(selectedConstruction))
+    ?.map((delta) => delta)
+    .flat();
+
+  console.log(deltaValues);
 
   return (
     <>
@@ -31,7 +42,15 @@ const ProcessorApp = () => {
             Рассчитанные значения для конструкции
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>Работа в процессе...</Modal.Body>
+        <Modal.Body>
+          {deltaValues?.map((delta, index) => (
+            <span className="pe-3">
+              <span className="fs-3">Δ</span>
+              <span className="fs-6"> {++index}</span>
+              {` = ${delta.toFixed(2)}`}
+            </span>
+          ))}
+        </Modal.Body>
       </Modal>
 
       <div className="preprocessorApp">
@@ -52,7 +71,12 @@ const ProcessorApp = () => {
                   <td>{++index}</td>
                   <td>{name.replace("construction.", "")}</td>
                   <td className="text-end">
-                    <Button onClick={() => setIsShowModal(true)}>
+                    <Button
+                      onClick={() => {
+                        setSelectedConstruction(name);
+                        setIsShowModal(true);
+                      }}
+                    >
                       Рассчитать
                     </Button>
                   </td>

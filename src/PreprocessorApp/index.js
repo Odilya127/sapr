@@ -181,7 +181,11 @@ const PreprocessorApp = () => {
   const handleSaveConstruction = () => {
     localStorage.setItem(
       `construction.${constructionName}`,
-      JSON.stringify(rodsData)
+      JSON.stringify({
+        rodsData,
+        leftLimit: isHaveSupports.supportLeft,
+        rightLimit: isHaveSupports.supportRight,
+      })
     );
     setRodsData([]);
     setIsShowModal(false);

@@ -1,3 +1,7 @@
+export const parseObjFromLocalStorage = (obj) => {
+  return JSON.parse(localStorage.getItem(obj));
+};
+
 export const getConstructionsFromLocalStorage = () => {
   const constructions = [];
   for (let i = 0; i < localStorage.length; i++) {
@@ -6,7 +10,7 @@ export const getConstructionsFromLocalStorage = () => {
     if (storedValue.includes("construction")) {
       constructions.push({
         name: storedValue,
-        construction: JSON.parse(localStorage.getItem(localStorage.key(i))),
+        construction: parseObjFromLocalStorage(localStorage.key(i)),
       });
     }
   }
