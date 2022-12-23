@@ -7,7 +7,7 @@ import {
   getConstructionsFromLocalStorage,
   parseObjFromLocalStorage,
 } from "./utils";
-import { calc } from "./calc";
+import { calcDelta, xsCalc } from "./calc";
 
 const ProcessorApp = () => {
   const [constructions, setConstructions] = useState([]);
@@ -22,12 +22,23 @@ const ProcessorApp = () => {
   };
 
   useEffect(() => setConstructions(getConstructionsFromLocalStorage()), []);
-
-  const deltaValues = calc(parseObjFromLocalStorage(selectedConstruction))
-    ?.map((delta) => delta)
+  const deltaValues = calcDelta(parseObjFromLocalStorage(selectedConstruction))
+    ?.delta?.map((delta) => delta)
     .flat();
 
   console.log(deltaValues);
+
+  // console.log(
+  //   "calc",
+  //   calcDelta(parseObjFromLocalStorage(selectedConstruction))
+  // );
+
+  // console.log("jopa", nCalc(construction?.rodsData?.[0], deltaValues));
+
+  // console.log(
+  //   " parseObjFromLocalStorage(selectedConstruction)?.rodsData[0]",
+  //   parseObjFromLocalStorage(selectedConstruction)?.rodsData[0]
+  // );
 
   return (
     <>
@@ -43,12 +54,47 @@ const ProcessorApp = () => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {deltaValues?.map((delta, index) => (
-            <span className="pe-3">
-              <span className="fs-3">Δ</span>
-              <span className="fs-6"> {++index}</span>
-              {` = ${delta.toFixed(2)}`}
-            </span>
+          {xsCalc(
+            parseObjFromLocalStorage(selectedConstruction)?.rodsData
+          )?.map((xsArr, index) => (
+            <div className="card-body">
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>{`Стержень ${++index}`}</th>
+                    {xsArr.map((val) => (
+                      <th>{val}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>N</td>
+                    {calcDelta(
+                      parseObjFromLocalStorage(selectedConstruction)
+                    ).N?.[--index]?.map((val) => (
+                      <td>{val}</td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td>U</td>
+                    {calcDelta(
+                      parseObjFromLocalStorage(selectedConstruction)
+                    ).U?.[index]?.map((val) => (
+                      <td>{val}</td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td>σ</td>
+                    {calcDelta(
+                      parseObjFromLocalStorage(selectedConstruction)
+                    ).U?.[index]?.map((val) => (
+                      <td>{val}</td>
+                    ))}
+                  </tr>
+                </tbody>
+              </Table>
+            </div>
           ))}
         </Modal.Body>
       </Modal>
