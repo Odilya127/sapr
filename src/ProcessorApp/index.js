@@ -87,9 +87,26 @@ const ProcessorApp = () => {
                   <tr>
                     <td>σ</td>
                     {calcDelta(
-                      parseObjFromLocalStorage(selectedConstruction)
-                    ).U?.[index]?.map((val) => (
-                      <td>{val}</td>
+                        parseObjFromLocalStorage(selectedConstruction)
+                    ).S?.[index]?.map((val) => (
+                        <td
+                            className={
+                              Number(val) <=
+                              Number(
+                                  parseObjFromLocalStorage(selectedConstruction)
+                                      ?.rodsData?.[index]?.allowableVoltage
+                              ) &&
+                              Number(val) >=
+                              -Number(
+                                  parseObjFromLocalStorage(selectedConstruction)
+                                      ?.rodsData?.[index]?.allowableVoltage
+                              )
+                                  ? `text-success`
+                                  : "text-danger"
+                            }
+                        >
+                          {val}
+                        </td>
                     ))}
                   </tr>
                 </tbody>
